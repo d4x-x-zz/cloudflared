@@ -21,6 +21,10 @@ import (
 //
 // TODO: look into how the reconnect backoff logic works in the tunnel package,
 // might want to tweak the retry intervals for my home server setup.
+//
+// TODO: also worth investigating whether I can reduce the number of connections
+// (currently defaults to 4) since my home server is pretty low-traffic and
+// 4 feels like overkill - probably 2 would be fine.
 func main() {
 	if err := cloudflared.Run(os.Args); err != nil {
 		fmt.Fprintf(os.Stderr, "\nerror: %v\n", err)
