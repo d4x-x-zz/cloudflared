@@ -36,12 +36,13 @@ func main() {
 		},
 		// Default action runs tunnel when no subcommand is given
 		Action: tunnel.TunnelCommand,
-		Flags: tunnel.Flags(),
+		Flags:  tunnel.Flags(),
 		Before: func(c *cli.Context) error {
 			return nil
 		},
 		ExitErrHandler: func(c *cli.Context, err error) {
 			if err != nil {
+				// print to stderr and exit with code 1 so scripts can detect failures easily
 				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 				os.Exit(1)
 			}
