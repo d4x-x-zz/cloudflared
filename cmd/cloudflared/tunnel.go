@@ -38,6 +38,13 @@ func TunnelCommand() *cli.Command {
 						// Default to true so autoupdates don't surprise me on my personal machines
 						Value: true,
 					},
+					&cli.StringFlag{
+						Name:    "loglevel",
+						Aliases: []string{"l"},
+						Usage:   "Log level (debug, info, warn, error)",
+						Value:   "debug", // I prefer debug by default when tinkering locally
+						EnvVars: []string{"TUNNEL_LOGLEVEL"},
+					},
 				},
 			},
 			{
@@ -118,8 +125,4 @@ func deleteTunnel(c *cli.Context) error {
 	logger := initLogger(c.String("loglevel"))
 
 	if c.NArg() == 0 {
-		return fmt.Errorf("tunnel ID or name is required")
-	}
-	tunnelID := c.Args().First()
-
-	logger.Info().Str
+		return fmt.Errorf("tun
