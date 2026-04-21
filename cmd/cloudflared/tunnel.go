@@ -35,7 +35,8 @@ func TunnelCommand() *cli.Command {
 					&cli.BoolFlag{
 						Name:  "no-autoupdate",
 						Usage: "Disable automatic updates",
-						Value: false,
+						// Default to true so autoupdates don't surprise me on my personal machines
+						Value: true,
 					},
 				},
 			},
@@ -121,8 +122,4 @@ func deleteTunnel(c *cli.Context) error {
 	}
 	tunnelID := c.Args().First()
 
-	logger.Info().Str("tunnel", tunnelID).Msg("Deleting tunnel...")
-
-	// TODO: call Cloudflare API to delete the tunnel
-	return fmt.Errorf("tunnel delete not yet implemented")
-}
+	logger.Info().Str
