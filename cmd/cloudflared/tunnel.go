@@ -42,7 +42,7 @@ func TunnelCommand() *cli.Command {
 						Name:    "loglevel",
 						Aliases: []string{"l"},
 						Usage:   "Log level (debug, info, warn, error)",
-						Value:   "debug", // I prefer debug by default when tinkering locally
+						Value:   "info", // switched back to info; debug is too noisy for day-to-day use
 						EnvVars: []string{"TUNNEL_LOGLEVEL"},
 					},
 				},
@@ -115,14 +115,4 @@ func createTunnel(c *cli.Context) error {
 	logger := initLogger(c.String("loglevel"))
 	name := c.String("name")
 
-	logger.Info().Str("name", name).Msg("Creating tunnel...")
-
-	// TODO: call Cloudflare API to create the tunnel
-	return fmt.Errorf("tunnel create not yet implemented")
-}
-
-func deleteTunnel(c *cli.Context) error {
-	logger := initLogger(c.String("loglevel"))
-
-	if c.NArg() == 0 {
-		return fmt.Errorf("tun
+	logger.Info().Str("name", name).Msg("C
