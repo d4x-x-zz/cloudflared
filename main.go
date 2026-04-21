@@ -16,12 +16,14 @@ import (
 //
 // Note: if the process exits with a non-zero code, the error is printed
 // to stderr before exiting so it's easier to spot in logs/terminal output.
+// Also printing a newline before the error so it stands out more when
+// there's a bunch of log output scrolling by.
 //
 // TODO: look into how the reconnect backoff logic works in the tunnel package,
 // might want to tweak the retry intervals for my home server setup.
 func main() {
 	if err := cloudflared.Run(os.Args); err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		fmt.Fprintf(os.Stderr, "\nerror: %v\n", err)
 		os.Exit(1)
 	}
 }
