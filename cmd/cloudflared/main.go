@@ -47,6 +47,8 @@ func main() {
 				os.Exit(1)
 			}
 		},
+		// suggest subcommands if the user makes a typo
+		SuggestAfterError: true,
 	}
 
 	if err := app.Run(os.Args); err != nil {
