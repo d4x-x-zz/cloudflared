@@ -49,6 +49,8 @@ func main() {
 		},
 		// suggest subcommands if the user makes a typo
 		SuggestAfterError: true,
+		// enable bash/zsh completion support
+		EnableShellCompletion: true,
 	}
 
 	if err := app.Run(os.Args); err != nil {
