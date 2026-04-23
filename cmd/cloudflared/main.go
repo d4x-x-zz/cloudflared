@@ -51,6 +51,11 @@ func main() {
 		SuggestAfterError: true,
 		// enable bash/zsh completion support
 		EnableShellCompletion: true,
+		// show help for subcommands when no args are provided instead of erroring out
+		CommandNotFound: func(c *cli.Context, command string) {
+			fmt.Fprintf(os.Stderr, "Unknown command %q. Run 'cloudflared --help' for a list of available commands.\n", command)
+			os.Exit(1)
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
