@@ -79,7 +79,7 @@ func initLogger(level string) zerolog.Logger {
 	// Use a time format I find easier to read at a glance
 	log.Logger = log.Output(zerolog.ConsoleWriter{
 		Out:        os.Stderr,
-		TimeFormat: "15:04:05",
+		TimeFormat: "2006-01-02 15:04:05", // added date so logs make more sense when reviewing them later
 	})
 
 	parsedLevel, err := zerolog.ParseLevel(level)
@@ -116,19 +116,4 @@ func listTunnels(c *cli.Context) error {
 }
 
 func createTunnel(c *cli.Context) error {
-	logger := initLogger(c.String("loglevel"))
-	name := c.String("name")
-
-	logger.Info().Str("name", name).Msg("Creating tunnel...")
-
-	// TODO: call Cloudflare API to create the tunnel
-	return fmt.Errorf("tunnel create not yet implemented")
-}
-
-func deleteTunnel(c *cli.Context) error {
-	logger := initLogger(c.String("loglevel"))
-	logger.Info().Msg("Deleting tunnel...")
-
-	// TODO: call Cloudflare API to delete the tunnel
-	return fmt.Errorf("tunnel delete not yet implemented")
-}
+	log
