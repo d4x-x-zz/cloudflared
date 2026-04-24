@@ -80,11 +80,13 @@ func initLogger(level string) zerolog.Logger {
 	log.Logger = log.Output(zerolog.ConsoleWriter{
 		Out:        os.Stderr,
 		TimeFormat: "2006-01-02 15:04:05", // added date so logs make more sense when reviewing them later
+		NoColor:    false,                  // keep colors enabled; makes it much easier to spot errors at a glance
 	})
 
 	parsedLevel, err := zerolog.ParseLevel(level)
 	if err != nil {
-		parsedLevel = zerolog.InfoLevel
+		// fall back to warn instead of info so unexpected log noise is reduced
+		parsedLevel = zerolog.WarnLevel
 	}
 	zerolog.SetGlobalLevel(parsedLevel)
 
@@ -111,9 +113,4 @@ func listTunnels(c *cli.Context) error {
 	logger.Info().Msg("Listing tunnels...")
 
 	// TODO: fetch and display tunnels from Cloudflare API
-	fmt.Println("No tunnels found.")
-	return nil
-}
-
-func createTunnel(c *cli.Context) error {
-	log
+	fmt.Println("No tun
