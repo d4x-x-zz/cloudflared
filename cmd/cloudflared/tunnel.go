@@ -85,8 +85,8 @@ func initLogger(level string) zerolog.Logger {
 
 	parsedLevel, err := zerolog.ParseLevel(level)
 	if err != nil {
-		// fall back to warn instead of info so unexpected log noise is reduced
-		parsedLevel = zerolog.WarnLevel
+		// fall back to info (not warn) so I still see normal operational messages
+		parsedLevel = zerolog.InfoLevel
 	}
 	zerolog.SetGlobalLevel(parsedLevel)
 
@@ -108,9 +108,4 @@ func runTunnel(c *cli.Context) error {
 	return fmt.Errorf("tunnel run not yet implemented")
 }
 
-func listTunnels(c *cli.Context) error {
-	logger := initLogger(c.String("loglevel"))
-	logger.Info().Msg("Listing tunnels...")
-
-	// TODO: fetch and display tunnels from Cloudflare API
-	fmt.Println("No tun
+func listTunnels(c 
