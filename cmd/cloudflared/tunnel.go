@@ -76,7 +76,11 @@ func TunnelCommand() *cli.Command {
 
 // initLogger sets up the global logger with the given log level.
 func initLogger(level string) zerolog.Logger {
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	// Use a time format I find easier to read at a glance
+	log.Logger = log.Output(zerolog.ConsoleWriter{
+		Out:        os.Stderr,
+		TimeFormat: "15:04:05",
+	})
 
 	parsedLevel, err := zerolog.ParseLevel(level)
 	if err != nil {
@@ -115,4 +119,16 @@ func createTunnel(c *cli.Context) error {
 	logger := initLogger(c.String("loglevel"))
 	name := c.String("name")
 
-	logger.Info().Str("name", name).Msg("C
+	logger.Info().Str("name", name).Msg("Creating tunnel...")
+
+	// TODO: call Cloudflare API to create the tunnel
+	return fmt.Errorf("tunnel create not yet implemented")
+}
+
+func deleteTunnel(c *cli.Context) error {
+	logger := initLogger(c.String("loglevel"))
+	logger.Info().Msg("Deleting tunnel...")
+
+	// TODO: call Cloudflare API to delete the tunnel
+	return fmt.Errorf("tunnel delete not yet implemented")
+}
