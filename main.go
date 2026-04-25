@@ -33,6 +33,8 @@ func main() {
 		fmt.Fprintln(os.Stderr, "---")
 		// also print a hint about common issues I keep running into
 		fmt.Fprintln(os.Stderr, "hint: if this is an auth error, try: cloudflared tunnel login")
+		// hint for the other error I keep hitting on my pi
+		fmt.Fprintln(os.Stderr, "hint: if this is a config error, check ~/.cloudflared/config.yml exists")
 		os.Exit(1)
 	}
 }
