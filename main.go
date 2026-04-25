@@ -31,6 +31,8 @@ func main() {
 		// print a separator so the error is easier to spot when
 		// there's a wall of log output above it
 		fmt.Fprintln(os.Stderr, "---")
+		// also print a hint about common issues I keep running into
+		fmt.Fprintln(os.Stderr, "hint: if this is an auth error, try: cloudflared tunnel login")
 		os.Exit(1)
 	}
 }
