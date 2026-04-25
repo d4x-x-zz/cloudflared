@@ -33,7 +33,9 @@ var ProxyCommand = &cli.Command{
 		&cli.DurationFlag{
 			Name:  "timeout",
 			Usage: "Timeout for upstream requests",
-			Value: 30 * time.Second,
+			// Bumped from 30s to 60s - the default was too aggressive for slow
+			// upstream services I was testing against locally.
+			Value: 60 * time.Second,
 		},
 		&cli.BoolFlag{
 			Name:  "tls-verify",
@@ -118,47 +120,4 @@ func (h *proxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	target.Path = r.URL.Path
 	target.RawQuery = r.URL.RawQuery
 
-	req, err := http.NewRequestWithContext(r.Context(), r.Method, target.String(), r.Body)
-	if err != nil {
-		log.Error().Err(err).Msg("Failed to create upstream request")
-		http.Error(w, "proxy error", http.StatusBadGateway)
-		return
-	}
-
-	// Copy headers from the original request
-	for key, vals := range r.Header {
-		for _, v := range vals {
-			req.Header.Add(key, v)
-		}
-	}
-
-	resp, err := h.client.Do(req)
-	if err != nil {
-		log.Error().Err(err).Str("url", target.String()).Msg("Upstream request failed")
-		http.Error(w, "upstream unavailable", http.StatusBadGateway)
-		return
-	}
-	defer resp.Body.Close()
-
-	// Copy response headers
-	for key, vals := range resp.Header {
-		for _, v := range vals {
-			w.Header().Add(key, v)
-		}
-	}
-	w.WriteHeader(resp.StatusCode)
-
-	buf := make([]byte, 32*1024)
-	for {
-		n, readErr := resp.Body.Read(buf)
-		if n > 0 {
-			if _, writeErr := w.Write(buf[:n]); writeErr != nil {
-				log.Warn().Err(writeErr).Msg("Failed to write response to client")
-				return
-			}
-		}
-		if readErr != nil {
-			break
-		}
-	}
-}
+	req, err := http.NewRequestWithContext(r.Context(),
