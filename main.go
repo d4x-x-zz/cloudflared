@@ -28,6 +28,9 @@ import (
 func main() {
 	if err := cloudflared.Run(os.Args); err != nil {
 		fmt.Fprintf(os.Stderr, "\nerror: %v\n", err)
+		// print a separator so the error is easier to spot when
+		// there's a wall of log output above it
+		fmt.Fprintln(os.Stderr, "---")
 		os.Exit(1)
 	}
 }
